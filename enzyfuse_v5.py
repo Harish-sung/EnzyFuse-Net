@@ -6,28 +6,6 @@ Authors: Gopalsamy B*, Swathi S, Harish M, Kanagalakshmi S
 Dept. of Biotechnology, KIT - Kalaignar Karunanidhi Institute of Technology,
 Coimbatore, India
 GitHub Repository: https://github.com/Harish-sung/EnzyFuse-Net
-
-KEY PEER-REVIEW & BIOINFORMATICS UPGRADES IN THIS COLAB SCRIPT:
-1. True Global CD-HIT (<40% Identity) Partitioning (`use_cdhit_for_protocol_b=True` by default)
-   & Authentic NCBI BLASTp (`-evalue 1e-3` without artificial 3-mer fallback):
-   - Globally clusters all N = 4,000 sequences using `cd-hit -c 0.40 -n 2` and assigns
-     disjoint clusters to Train/Val/Test so no test sequence shares >=40% sequence identity
-     with any training sequence across the entire corpus.
-   - Evaluates `blastp` at `E <= 1e-3`, reporting both unconditional Macro F1 across all
-     600 test queries (`76.84%*`) and conditional F1 on aligned hits (`85.65%`).
-2. Live 2D t-SNE Manifold Visualization (`fig2_tsne_live.png`):
-   - Runs `sklearn.manifold.TSNE(n_components=2, perplexity=30, random_state=42)` directly
-     on the 4,000 x 320 ESM-2 embeddings (`esm2_t6_8M_4000_embeddings.npy`) and saves
-     `fig2_tsne_live.png`.
-3. Unambiguous Branch-Matched Ablation Study in Table VI & Calibrated Fusion (Eq. 6):
-   - Discloses validation-tuned power-scaling calibration (`gamma` in {0.35, 0.5, 0.75, 1.0, 1.25})
-     and convex mixing weight (`alpha` in [0.10, 0.90]) matching Equation (6) in the manuscript.
-   - Evaluates Dual-Branch removal on the `<40%` CD-HIT split (`78.00%` baseline -> `-1.33%`
-     GELU-only at `76.67%`, `-1.67%` SupCon-only at `76.33%`) and single-branch component
-     ablations (`-BatchNorm1d` `-0.50%` to `82.33%`, `-GELU (ReLU)` `+0.50%` to `83.33%`,
-     `-Label Smoothing` `-0.33%` to `82.50%`) against the `82.83%` GELU branch.
-4. Full-Length ESM-2 Context Window (`max_len=402`): Encodes 100% of the 80 <= L <= 400 AA
-   corpus without C-terminal truncation.
 """
 import os
 import sys
