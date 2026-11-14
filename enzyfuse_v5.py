@@ -6,26 +6,6 @@ Authors: Gopalsamy B*, Swathi S, Harish M, Kanagalakshmi S
 Dept. of Biotechnology, KIT - Kalaignar Karunanidhi Institute of Technology,
 Coimbatore, India
 GitHub Repository: https://github.com/Harish-sung/EnzyFuse-Net
-
-KEY PEER-REVIEW & BIOINFORMATICS UPGRADES IN THIS COLAB SCRIPT:
-1. True CD-HIT (<40% Identity) Partitioning (`use_cdhit_for_protocol_b=True` by default)
-   & Authentic NCBI BLASTp (`-evalue 1e-3` without artificial 3-mer fallback):
-   - Clusters Protocol B using genuine `cd-hit -c 0.40 -n 2` so no test sequence shares
-     >=40% sequence identity with any training sequence (eliminating the hidden homologies
-     that previously leaked through 3-mer Jaccard clustering).
-   - Evaluates `blastp` at the standard homology-transfer threshold (`E <= 1e-3`), recording
-     sequences with no homologous alignment in the twilight zone as unaligned misses (or
-     prior-class fallback) rather than secretly falling back to 3-mer Jaccard similarity.
-2. Validation-Tuned Dual-Branch Probability Fusion (`tune_calibrated_dual_branch_fusion`) &
-   Cosine Classifier Head + Embedding-Initialized Centroids for Fine-Grained Tiers (L2-L4):
-   - Calibrates `(alpha, tau_gelu, tau_supcon)` strictly on the held-out validation split,
-     preventing the uncalibrated SupCon sharpness drop on Random Split.
-   - Initializes fine-grained class prototypes from L2-normalized ESM-2 embeddings with
-     cosine-similarity logits so EnzyFuse-Net V5 outperforms BLASTp across all 4 EC tiers.
-3. Full-Length ESM-2 Context Window (max_len=402): Encodes 100% of the 80 <= L <= 400 AA
-   corpus without C-terminal truncation (ESM-2 natively supports up to 1,024 tokens).
-4. Exact Subclass & 4-Digit EC Accounting in Table I: Distinguishes the 942 enzyme 4-digit EC
-   families (EC 1-7) from the 1 Non-Enzyme negative control category (Total K_4 = 943).
 """
 import os
 import sys
